@@ -101,5 +101,19 @@ namespace MvcOAuthApiEmpleados.Services
             return await this.CallApiAsync<Empleado>(request, token);
         }
 
+        public async Task<Empleado> GetPerfilAsync()
+        {
+            string token = this.accessor.HttpContext.User.FindFirst(x => x.Type == "TOKEN").Value;
+            string request = "api/empleados/perfil";
+            return await this.CallApiAsync<Empleado>(request, token);
+        }
+
+        public async Task<List<Empleado>> GetCompisAsync()
+        {
+            string token = this.accessor.HttpContext.User.FindFirst(x => x.Type == "TOKEN").Value;
+            string request = "api/empleados/compis";
+            return await this.CallApiAsync<List<Empleado>>(request, token);
+        }
+
     }
 }

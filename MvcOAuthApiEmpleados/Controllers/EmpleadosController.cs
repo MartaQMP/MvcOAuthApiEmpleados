@@ -34,10 +34,16 @@ namespace MvcOAuthApiEmpleados.Controllers
         [AuthorizeEmpleados]
         public async Task<IActionResult> Perfil()
         {
-            var data = HttpContext.User.FindFirst(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            int id = int.Parse(data);
-            Empleado empleado = await this.service.FindEmpleadoAsync(id);
+            Empleado empleado = await this.service.GetPerfilAsync();
             return View(empleado);
         }
+
+        [AuthorizeEmpleados]
+        public async Task<IActionResult> Compis()
+        {
+            List<Empleado> empleados = await this.service.GetCompisAsync();
+            return View(empleados);
+        }
+
     }
 }
