@@ -1,4 +1,5 @@
-﻿using MvcOAuthApiEmpleados.Models;
+﻿using MvcOAuthApiEmpleados.Filters;
+using MvcOAuthApiEmpleados.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
@@ -10,11 +11,13 @@ namespace MvcOAuthApiEmpleados.Services
     {
         private string UrlApi;
         private MediaTypeWithQualityHeaderValue header;
+        private IHttpContextAccessor accessor;
 
-        public ServiceEmpleados(IConfiguration configuration)
+        public ServiceEmpleados(IConfiguration configuration, IHttpContextAccessor accessor)
         {
             this.UrlApi = configuration.GetValue<string>("ApiUrls:ApiEmpleados");
             this.header = new MediaTypeWithQualityHeaderValue("application/json");
+            this.accessor = accessor;
         }
 
         public async Task<string> LogInAsync(string user, string pass)
@@ -91,10 +94,12 @@ namespace MvcOAuthApiEmpleados.Services
             return await this.CallApiAsync<List<Empleado>>(request);
         }
 
-        public async Task<Empleado> FindEmpleadoAsync(int id, string token)
+        public async Task<Empleado> FindEmpleadoAsync(int id)
         {
+            string token = this.accessor.HttpContext.User.FindFirst(x => x.Type == "TOKEN").Value;
             string request = "api/empleados/"+id;
             return await this.CallApiAsync<Empleado>(request, token);
         }
+
     }
 }
