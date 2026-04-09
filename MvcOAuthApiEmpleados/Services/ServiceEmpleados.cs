@@ -115,5 +115,42 @@ namespace MvcOAuthApiEmpleados.Services
             return await this.CallApiAsync<List<Empleado>>(request, token);
         }
 
+        public string TransformCollectionToQuery(List<string> collection)
+        {
+            string result = "";
+            foreach(string oficio in collection)
+            {
+                result += "oficio=" + oficio + "&";
+            }
+            result = result.TrimEnd('&');
+            return result;
+        }
+
+        public async Task<List<string>> GetOficiosAsync()
+        {
+            string request = "api/empleados/oficios";
+            return await this.CallApiAsync<List<string>>(request);
+        }
+
+        public async Task<List<Empleado>> GetEmpleadosOficiosAsync(List<string> oficios)
+        {
+            string request = "api/empleados/empleadosoficios";
+            string data = this.TransformCollectionToQuery(oficios);
+            return await this.CallApiAsync<List<Empleado>>(request + "?" + data);
+        }
+
+        public async Task IncrementarSalarioAsync (int incremento, List<string> oficios)
+        {
+            string request = "api/empleados/incrementarsalarios/" + incremento;
+            string data = this.TransformCollectionToQuery(oficios);
+            using(HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(this.UrlApi);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(this.header);
+                HttpResponseMessage response = await client.PutAsync(request + "?" + data, null);
+            }
+        }
+
     }
 }

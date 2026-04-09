@@ -45,5 +45,25 @@ namespace MvcOAuthApiEmpleados.Controllers
             return View(empleados);
         }
 
+        public async Task<IActionResult> EmpleadosOficios()
+        {
+            List<string> oficios = await this.service.GetOficiosAsync();
+            ViewBag.Oficios = oficios;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EmpleadosOficios(int? incremento, List<string> oficio, string accion)
+        {
+            List<string> oficios = await this.service.GetOficiosAsync();
+            ViewBag.Oficios = oficios;
+            if(accion.ToLower() == "update")
+            {
+                await this.service.IncrementarSalarioAsync(incremento.Value, oficio);
+            }
+            List<Empleado> empleados = await this.service.GetEmpleadosOficiosAsync(oficio);
+            return View(empleados);
+        }
+
     }
 }

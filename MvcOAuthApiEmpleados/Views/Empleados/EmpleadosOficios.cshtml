@@ -1,0 +1,54 @@
+﻿@model List<Empleado>
+
+<h1>Empleados Oficios</h1>
+<hr />
+<form method="post">
+    <label class="form-label">Selecciona un oficio:</label>
+    <select name="oficio" class="form-select" size="3" multiple>
+        @foreach (string oficio in ViewBag.Oficios)
+        {
+            <option value="@oficio">@oficio</option>
+        }
+    </select>
+    <label class="form-label">Incremento:</label>
+    <input name="incremento" class="form-control" type="text" />
+    <br />
+    <button name="accion" value="show" class="btn btn-outline-dark">Mostrar empleados</button>
+    <button name="accion" value="update" class="btn btn-outline-danger">Incrementar salarios</button>
+</form>
+<hr />
+@if(Model != null)
+{
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id Empleado</th>
+            <th>Apellido</th>
+            <th>Oficio</th>
+            <th>Salario</th>
+            <th>Id Departamento</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdEmpleado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apellido)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Oficio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdDepartamento)
+                </td>
+            </tr>
+    }
+    </tbody>
+</table>
+}
