@@ -3,5 +3,11 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Bienvenido</h1>
+    <form method="post">
+        <label class="form-label">Nombre del secreto:</label>
+        <input type="text" name="secretname" class="form-control" />
+        <br />
+        <button class="btn btn-warning">Mostrar secreto</button>
+    </form>
+    <h2 class="color:blue">@ViewBag.Secreto</h2>
 </div>
